@@ -1,4 +1,4 @@
-#include "codec.h"
+#include "../include/codec.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[])
