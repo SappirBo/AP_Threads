@@ -20,7 +20,10 @@ If your machin doesnt recognize the executable, try `sudo chmod +x test.sh`<br/>
 3. bigFile.txt, Time taken to encrypt: 1.902 seconds, Time taken to decrypt: 1.947 seconds.
 
 
-|File| bytes| before threadpool| after threadpool| 
+File| bytes| encrypt before threadpool|encrypt after threadpool| decrypt before threadpool|decrypt after threadpool
+helloWorld.txt| 0.0| 0.138 seconds| 0.138 seconds| 0.140 seconds. |0.138 seconds.
+az.txt| 0.0| 13.128seconds.| 2.894 seconds.|13.139 seconds.|0.017 seconds.
+bigFile.txt| 0.0| 42.858 seconds| 1.902 seconds.|42.898 seconds.|1.947 seconds.
 
 ## Sources
 [Data about Threadpool and code example](https://nachtimwald.com/2019/04/12/thread-pool-in-c/).
