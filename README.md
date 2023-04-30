@@ -11,20 +11,22 @@ If your machin doesnt recognize the executable, try `sudo chmod +x test.sh`<br/>
 
 
 ## Compare linear run vs thread driven run
-1. az.txt, time to encrypt = 13.128seconds. Time taken to decrypt: 13.139 seconds.
-2. helloWorld.txt, Time taken to encrypt: 0.138 seconds,Time taken to decrypt: 0.140 seconds.
-3. bigFile.txt, Time taken to encrypt: 42.858 seconds, Time taken to decrypt: 42.898 seconds.
-
-1. az.txt, Time taken to encrypt: 2.894 seconds, Time taken to decrypt: 0.017 seconds.
-2. helloWorld.txt, Time taken to encrypt: 0.138 seconds, Time taken to decrypt: 0.138 seconds.
-3. bigFile.txt, Time taken to encrypt: 1.902 seconds, Time taken to decrypt: 1.947 seconds.
-
 
 File| bytes| encrypt before threadpool|encrypt after threadpool| decrypt before threadpool|decrypt after threadpool
 ---|---|---|---|---|---
 helloWorld.txt| 0.0| 0.138 seconds| 0.138 seconds| 0.140 seconds. |0.138 seconds.
 az.txt| 0.0| 13.128seconds.| 2.894 seconds.|13.139 seconds.|0.017 seconds.
 bigFile.txt| 0.0| 42.858 seconds| 1.902 seconds.|42.898 seconds.|1.947 seconds.
+
+before:
+1. az.txt, time to encrypt = 13.128seconds. Time taken to decrypt: 13.139 seconds.
+2. helloWorld.txt, Time taken to encrypt: 0.138 seconds,Time taken to decrypt: 0.140 seconds.
+3. bigFile.txt, Time taken to encrypt: 42.858 seconds, Time taken to decrypt: 42.898 seconds.
+
+after:
+1. az.txt, Time taken to encrypt: 2.894 seconds, Time taken to decrypt: 0.017 seconds.
+2. helloWorld.txt, Time taken to encrypt: 0.138 seconds, Time taken to decrypt: 0.138 seconds.
+3. bigFile.txt, Time taken to encrypt: 1.902 seconds, Time taken to decrypt: 1.947 seconds.
 
 ## Sources
 [Data about Threadpool and code example](https://nachtimwald.com/2019/04/12/thread-pool-in-c/).
