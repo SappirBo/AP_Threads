@@ -28,16 +28,13 @@ int getData_stdIn(dataChunk *headChunk){
 		chunckNum++;
 	  }
 	}
-	printf("getData4\n");
 	if(counter > 0){
-		printf("	counter = %d, Chunck number = %d\n", counter, chunckNum);
 		char lastData[counter];
 		ptrData->num = chunckNum;
 		ptrData->data[0] = '\0';
 		strncat(ptrData->data, data, counter);
 		ptrData = ptrData->next; 
 	}
-	printf("getData5\n");
 
 	return chunckNum;
 }
@@ -113,9 +110,7 @@ int getData_fromFile(dataChunk *headChunk,char* path)
 		chunckNum++;
 	  }
 	}
-	printf("getData4\n");
 	if(counter > 0){
-		printf("	counter = %d, Chunck number = %d\n", counter, chunckNum);
 		char lastData[counter];
 		lastData[0] = '\0';
 		ptrData->num = chunckNum;
@@ -123,7 +118,6 @@ int getData_fromFile(dataChunk *headChunk,char* path)
 		strcpy(ptrData->data, lastData);
 		ptrData->data[counter] = '\0';
 	}
-	printf("getData5\n");
 	fclose(fp);
 	return chunckNum;
 }

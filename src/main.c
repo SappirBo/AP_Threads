@@ -1,9 +1,23 @@
-#include "../include/codec.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+#include "../include/dataChunk.h"
+#include "../include/threadpool.h"
+#include "../include/codec.h"
+
+/*Variable declaration*/
 # define MAX_SIZE 1024
+typedef void (*crypto_fn)(char *s,int key);
+
+/*Function for oparate encrypt/decrypt, 
+Params:
+	(flag = false) => encrypt.
+	(flag = true) => decrypt.
+	_head => StartPoint for the Chunks.
+*/
+static void _operateAction(dataChunk* _ptrCh, bool _flag, int _crypt_key);
+
 
 int main(int argc, char *argv[])
 {
@@ -27,21 +41,25 @@ int main(int argc, char *argv[])
 	*/
 	int key = atoi(argv[1]);
     char flag[MAX_SIZE];
+	bool operate_flag;
     char source_file[MAX_SIZE];
     char dest_file[MAX_SIZE];
     strcpy(flag, argv[2]);
     strcpy(source_file,argv[3]);
     strcpy(dest_file,argv[4]);
 	
+
     
     printf("key is %i,",key);
     if(!strcmp(flag,"-d"))
     {
-        printf("Flag = decrypt\n");    
+        printf("Flag = decrypt\n");
+		operate_flag = true;  
     }
     else if(!strcmp(flag,"-e"))
     {
-        printf("Flag = encrypt\n");   
+        printf("Flag = encrypt\n");  
+		operate_flag = false; 
     }
     else
     {
@@ -55,28 +73,45 @@ int main(int argc, char *argv[])
 	int counter = 0;
 	int dest_size = MAX_SIZE;
 	char data[dest_size]; 
-	
+	dataChunk* _headCh = (dataChunk*)malloc(sizeof(dataChunk));
+	int num_of_chunks = 0;
 
-	while ((c = getchar()) != EOF)
+	if(!(strcmp(source_file,">")))
 	{
-	  data[counter] = c;
-	  counter++;
-
-	  if (counter == 1024){
-		encrypt(data,key);
-		printf("encripted data: %s\n",data);
-		counter = 0;
-	  }
+		num_of_chunks = getData_stdIn(_headCh);
+	}
+	else
+	{
+		num_of_chunks = getData_fromFile(_headCh,source_file);
+	}
+	int i=0;
+	dataChunk* _ptrCh = _headCh;
+	
+	while(i<=num_of_chunks)
+	{
+		_operateAction(_ptrCh,operate_flag,key);
+		_ptrCh = _ptrCh->next;
+		i++;
 	}
 	
-	if (counter > 0)
-	{
-		char lastData[counter];
-		lastData[0] = '\0';
-		strncat(lastData, data, counter);
-		encrypt(lastData,key);
-		printf("encripted data:\n %s\n",lastData);
-	}
+
+	printChunks(_headCh, num_of_chunks);
+
+	writeDataToFile(_headCh,num_of_chunks,dest_file);
 
 	return 0;
+}
+
+
+void _operateAction(dataChunk* _ptrCh, bool _flag, int _crypt_key)
+{
+	// Updating crypto_fn to be the right function according to the operation flag.
+	crypto_fn fn = NULL;
+	if (_flag) {
+		fn = decrypt;
+    } else {
+		fn = encrypt;
+    }
+
+	fn(_ptrCh->data, _crypt_key);
 }

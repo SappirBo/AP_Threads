@@ -1,6 +1,6 @@
 CC = gcc
 # LIBS = -L./build -I./build/  -l Codec
-LIBS = ./build/libCodec.so include/codec.h include/threadpool.h src/threadpool.c
+LIBS = ./build/libCodec.so include/codec.h include/threadpool.h src/threadpool.c include/dataChunk.h src/dataChunck.c
 EXPORT=export LD_LIBRARY_PATH=./build:$LD_LIBRARY_PATH
 
 
