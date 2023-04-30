@@ -6,6 +6,14 @@
 #include "../include/threadpool.h"
 #include "../include/codec.h"
 
+/*threads arguments*/
+typedef struct _thread_args {
+    dataChunk* arg_ptrCh;
+	bool arg_flag;
+	int arg_crypt_key;
+} thread_args_t;
+
+
 /*Variable declaration*/
 # define MAX_SIZE 1024
 typedef void (*crypto_fn)(char *s,int key);
@@ -16,7 +24,7 @@ Params:
 	(flag = true) => decrypt.
 	_head => StartPoint for the Chunks.
 */
-static void _operateAction(dataChunk* _ptrCh, bool _flag, int _crypt_key);
+static void _operateAction(void* args);
 
 
 int main(int argc, char *argv[])
@@ -84,23 +92,45 @@ int main(int argc, char *argv[])
 	int i=0;
 	dataChunk* _ptrCh = _headCh;
 	
+	//Setting up the threadpool
+	tpool_t *tm;
+	tm = tpool_create(num_of_chunks);
+
+	// adding chunks to different threads.
 	while(i<=num_of_chunks)
 	{
-		_operateAction(_ptrCh,operate_flag,key);
+		//setting args variable for the thread. 
+		thread_args_t th_args;
+		th_args.arg_ptrCh = _ptrCh;
+		th_args.arg_flag = operate_flag;
+		th_args.arg_crypt_key = key;
+
+		// add thread
+        tpool_add_work(tm, _operateAction, &th_args);
+
 		_ptrCh = _ptrCh->next;
 		i++;
 	}
 	
 
+	tpool_wait(tm);
+
 
 	writeDataToFile(_headCh,num_of_chunks,dest_file);
 
+	tpool_destroy(tm);
+	
 	return 0;
 }
 
 
-void _operateAction(dataChunk* _ptrCh, bool _flag, int _crypt_key)
+void _operateAction(void* args)
 {
+	thread_args_t* _arg = (thread_args_t*) args;
+    dataChunk* _ptrCh = _arg->arg_ptrCh;
+    bool _flag = _arg->arg_flag;
+    int _crypt_key = _arg->arg_crypt_key;
+
 	// Updating crypto_fn to be the right function according to the operation flag.
 	crypto_fn fn = NULL;
 	if (_flag) {
