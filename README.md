@@ -31,3 +31,9 @@ after:
 ## Sources
 [Data about Threadpool and code example](https://nachtimwald.com/2019/04/12/thread-pool-in-c/).
 
+## ToDo
+1. check validation of "<" Operator.
+2. make sure encrypt/decrypt work properly.
+3. adding test script.
+4. find why there are some extra chars.
+
