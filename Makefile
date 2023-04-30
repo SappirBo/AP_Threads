@@ -21,7 +21,10 @@ mainCoder: src/main.c
 threadpool.o: include/threadpool.h src/threadpool.c
 	$(CC) -c src/threadpool.c
 
+chunksTest:
+	gcc -o chunks test/testDataChuncks.c include/dataChunk.h src/dataChunck.c 
+
 .PHONY: clean
 clean:
-	-rm encoder tester coder
+	-rm encoder tester coder test/chunks
 # -rm libCodec.so 2>/dev/null

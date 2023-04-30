@@ -51,7 +51,6 @@ int main(int argc, char *argv[])
 
     printf("Source: %s, Dest: %s\n",source_file,dest_file);
 
-
 	char c;
 	int counter = 0;
 	int dest_size = MAX_SIZE;
