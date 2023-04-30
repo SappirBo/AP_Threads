@@ -26,5 +26,5 @@ chunksTest:
 
 .PHONY: clean
 clean:
-	-rm encoder tester coder test/chunks
+	-rm encoder tester coder chunks
 # -rm libCodec.so 2>/dev/null
