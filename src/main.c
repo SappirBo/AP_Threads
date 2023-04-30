@@ -7,13 +7,24 @@
 
 int main(int argc, char *argv[])
 {
-	if (argc != 5)
+	/*Check for valid amount of arguments, expect 5 arguments exactly.*/
+	if (argc < 5)
 	{
-	    printf("usage: key < file \n");
-	    printf("!! data more than 1024 char will be ignored !!\n");
+	    printf("Eror: missing arguments!, %d/5 found.\n",argc);
 	    return 0;
 	}
+	else if (argc > 5)
+	{
+	    printf("Eror: to much arguments!, %d/5 found.\n",argc);
+	    return 0;
+	} 
 
+	/*Parse input arguments
+		1. Key for the encrypt/decrypt
+		2. flag (e/d) for encrypt/decrypt
+		3. {source file name}  OR ">" for pipe.
+		4. {destination file name}. 
+	*/
 	int key = atoi(argv[1]);
     char flag[MAX_SIZE];
     char source_file[MAX_SIZE];
@@ -39,9 +50,6 @@ int main(int argc, char *argv[])
     }
 
     printf("Source: %s, Dest: %s\n",source_file,dest_file);
-
-
-
 
 
 	char c;

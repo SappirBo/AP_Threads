@@ -1,12 +1,12 @@
 CC = gcc
-LIBS = -L./build -I./build/  -l Codec
+# LIBS = -L./build -I./build/  -l Codec
+LIBS = ./build/libCodec.so include/codec.h include/threadpool.h src/threadpool.c
+EXPORT=export LD_LIBRARY_PATH=./build:$LD_LIBRARY_PATH
 
 
-
-.PHONY: all
 
 all: task stdinExample mainCoder
-	export LD_LIBRARY_PATH=./build:$LD_LIBRARY_PATH
+	$(EXPORT)
 
 task:	include/codec.h src/basic_main.c
 	$(CC) src/basic_main.c $(LIBS) -o encoder
@@ -17,7 +17,9 @@ stdinExample:	src/stdin_main.c
 
 mainCoder: src/main.c
 	$(CC) src/main.c $(LIBS) -o coder
-	
+
+threadpool.o: include/threadpool.h src/threadpool.c
+	$(CC) -c src/threadpool.c
 
 .PHONY: clean
 clean:
