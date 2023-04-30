@@ -50,15 +50,12 @@ int main(int argc, char *argv[])
 	
 
     
-    printf("key is %i,",key);
     if(!strcmp(flag,"-d"))
     {
-        printf("Flag = decrypt\n");
 		operate_flag = true;  
     }
     else if(!strcmp(flag,"-e"))
     {
-        printf("Flag = encrypt\n");  
 		operate_flag = false; 
     }
     else
@@ -67,7 +64,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    printf("Source: %s, Dest: %s\n",source_file,dest_file);
+    // printf("Source: %s, Dest: %s\n",source_file,dest_file);
 
 	char c;
 	int counter = 0;
@@ -95,7 +92,6 @@ int main(int argc, char *argv[])
 	}
 	
 
-	printChunks(_headCh, num_of_chunks);
 
 	writeDataToFile(_headCh,num_of_chunks,dest_file);
 

@@ -26,5 +26,9 @@ chunksTest:
 
 .PHONY: clean
 clean:
-	-rm encoder tester coder chunks
+# remove encoder, but only if it exists
+	if [ -e encoder ]; then rm encoder; fi
+	if [ -e tester ]; then rm tester; fi
+	if [ -e coder ]; then rm coder; fi
+	if [ -e chunks ]; then rm chunks; fi
 # -rm libCodec.so 2>/dev/null
