@@ -10,7 +10,7 @@ int getData_stdIn(dataChunk *headChunk){
 	dataChunk* ptrData = headChunk;
 	char c;
 	int counter = 0;
-	int chunckNum = 0;
+	int chunckNum = 1;
 	int dest_size = 1024;
 	char data[dest_size];
 	while ((c = getchar()) != EOF)
@@ -42,7 +42,7 @@ int getData_stdIn(dataChunk *headChunk){
 void printChunks(dataChunk *headChunk, int size){
 	dataChunk *ptr = headChunk; 
 	int counter = 0;
-	while(counter<=size)
+	while(counter<size)
 	{
 		printf("%d)--------------------------------------------------------------------------------------------------------------\n",counter++);
 		printf("%s\n",ptr->data);
@@ -81,7 +81,7 @@ int getData_fromFile(dataChunk *headChunk,char* path)
 	dataChunk* ptrData = headChunk;
 	char c;
 	int counter = 0;
-	int chunckNum = 0;
+	int chunckNum = 1;
 	int dest_size = 1024;
 	char data[dest_size];
 
@@ -133,7 +133,7 @@ int writeDataToFile(dataChunk *_headChunk, int _chunk_amount, char* _filePath){
         return 0;
     }
     int count = 0;
-	while(count<=_chunk_amount)
+	while(count<_chunk_amount)
 	{
 		fputs(ptr->data, fp);
 		count++;

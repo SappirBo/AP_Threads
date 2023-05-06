@@ -17,6 +17,10 @@ struct tpool_work {
 };
 typedef struct tpool_work tpool_work_t;
 
+/*
+Since the work queue is implemented as a linked list work_first and work_last are used to push and pop work objects.
+There is a single mutex (work_mutex) which is used for all locking.
+*/
 struct tpool {
     tpool_work_t    *work_first;
     tpool_work_t    *work_last;
@@ -28,6 +32,7 @@ struct tpool {
     bool             stop;
 };
 
+/*Simple helpers for creating and destroying work objects.*/
 static tpool_work_t *tpool_work_create(thread_func_t func, void *arg)
 {
     tpool_work_t *work;
@@ -42,6 +47,7 @@ static tpool_work_t *tpool_work_create(thread_func_t func, void *arg)
     return work;
 }
 
+/*Simple helpers for creating and destroying work objects.*/
 static void tpool_work_destroy(tpool_work_t *work)
 {
     if (work == NULL)
@@ -49,6 +55,10 @@ static void tpool_work_destroy(tpool_work_t *work)
     free(work);
 }
 
+/*
+Work will need to be pulled from the queue at some point to be processed. Since the queue is a linked list this handles
+not only pulling an object from the list but also maintaining the list work_first and work_last references for us.
+ */
 static tpool_work_t *tpool_work_get(tpool_t *tm)
 {
     tpool_work_t *work;
@@ -70,6 +80,10 @@ static tpool_work_t *tpool_work_get(tpool_t *tm)
     return work;
 }
 
+/*
+This is the heart and soul of the pool and is where work is handled. At a high level this waits for work and processes it.
+
+*/
 static void *tpool_worker(void *arg)
 {
     tpool_t      *tm = arg;

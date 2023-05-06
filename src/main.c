@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "../include/dataChunk.h"
 #include "../include/threadpool.h"
@@ -57,7 +58,6 @@ int main(int argc, char *argv[])
     strcpy(dest_file,argv[4]);
 	
 
-    
     if(!strcmp(flag,"-d"))
     {
 		operate_flag = true;  
@@ -71,9 +71,6 @@ int main(int argc, char *argv[])
         printf("Flag is UNKNOWN.\n");
         return 0;
     }
-
-    // printf("Source: %s, Dest: %s\n",source_file,dest_file);
-
 	char c;
 	int counter = 0;
 	int dest_size = MAX_SIZE;
@@ -89,37 +86,44 @@ int main(int argc, char *argv[])
 	{
 		num_of_chunks = getData_fromFile(_headCh,source_file);
 	}
-	int i=0;
 	dataChunk* _ptrCh = _headCh;
-	
 	//Setting up the threadpool
 	tpool_t *tm;
 	tm = tpool_create(num_of_chunks);
-
 	// adding chunks to different threads.
-	while(i<=num_of_chunks)
+	int i=0;
+	thread_args_t* th_args = malloc(num_of_chunks * sizeof(thread_args_t));
+	if (th_args == NULL) {
+		// Error handling for memory allocation failure
+		printf("Error: Failed to allocate memory for th_args\n");
+		return -1;
+	}
+
+	while(i<num_of_chunks)
 	{
 		//setting args variable for the thread. 
-		thread_args_t th_args;
-		th_args.arg_ptrCh = _ptrCh;
-		th_args.arg_flag = operate_flag;
-		th_args.arg_crypt_key = key;
-
+		th_args[i].arg_ptrCh = _ptrCh;
+		th_args[i].arg_flag = operate_flag;
+		th_args[i].arg_crypt_key = key;
 		// add thread
-        tpool_add_work(tm, _operateAction, &th_args);
-
+        if(tpool_add_work(tm, _operateAction, th_args + i) == false){
+			printf("Threadpool error: thread couldnt added to work\n");
+			break;
+		}
+		
 		_ptrCh = _ptrCh->next;
 		i++;
 	}
 	
-
 	tpool_wait(tm);
 
+	sleep(0.1);
+
+	tpool_destroy(tm);
 
 	writeDataToFile(_headCh,num_of_chunks,dest_file);
 
-	tpool_destroy(tm);
-	
+	free(th_args);
 	return 0;
 }
 
@@ -130,14 +134,11 @@ void _operateAction(void* args)
     dataChunk* _ptrCh = _arg->arg_ptrCh;
     bool _flag = _arg->arg_flag;
     int _crypt_key = _arg->arg_crypt_key;
-
 	// Updating crypto_fn to be the right function according to the operation flag.
 	crypto_fn fn = NULL;
 	if (_flag) {
-		fn = decrypt;
+		decrypt(_ptrCh->data, _crypt_key);
     } else {
-		fn = encrypt;
+		encrypt(_ptrCh->data, _crypt_key);
     }
-
-	fn(_ptrCh->data, _crypt_key);
 }
