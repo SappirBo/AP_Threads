@@ -33,7 +33,5 @@ after:
 
 ## ToDo
 1. check validation of "<" Operator.
-2. make sure encrypt/decrypt work properly.
-3. adding test script.
-4. find why there are some extra chars.
+2. adding test script.
 
