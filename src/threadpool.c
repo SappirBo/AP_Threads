@@ -178,7 +178,6 @@ void tpool_destroy(tpool_t *tm)
     free(tm);
 }
 
-
 bool tpool_add_work(tpool_t *tm, thread_func_t func, void *arg)
 {
     tpool_work_t *work;

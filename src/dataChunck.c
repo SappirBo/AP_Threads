@@ -125,7 +125,7 @@ int getData_fromFile(dataChunk *headChunk,char* path)
 int writeDataToFile(dataChunk *_headChunk, int _chunk_amount, char* _filePath){
 	FILE *fp;
     dataChunk* ptr = _headChunk;
-
+	// printf("[writeDataToFile] _chunks amout: %d\n",_chunk_amount);
 	if(!strcmp(_filePath,"send_to_std"))
 	{
 		fp = stdout;
@@ -141,8 +141,10 @@ int writeDataToFile(dataChunk *_headChunk, int _chunk_amount, char* _filePath){
 	}
     
     int count = 0;
+	
 	while(count<_chunk_amount)
 	{
+		// printf("[writeDataToFile] count: %d, ptr num: %d\n",count, ptr->num);
 		size_t length = strlen(ptr->data);
 		size_t numChars = (length < 1024) ? length : 1024;
 

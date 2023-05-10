@@ -2,6 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
+#include <omp.h>
+#include <sys/sysinfo.h>
+
 
 #include "../include/dataChunk.h"
 #include "../include/threadpool.h"
@@ -100,11 +104,18 @@ int main(int argc, char *argv[])
 	{
 		num_of_chunks = getData_fromFile(_headCh,source_file);
 	}
-
+	// printf("[main] number of chunks: %d\n",num_of_chunks);
 	dataChunk* _ptrCh = _headCh;
 	//Setting up the threadpool
 	tpool_t *tm;
-	tm = tpool_create(num_of_chunks);
+	// Check the number of availble threads.
+	int maxThreads = get_nprocs();
+	if (maxThreads == -1) {
+        perror("Failed to get the maximum number of threads");
+        return 1;
+    }
+	// Creating the threadpool
+	tm = tpool_create(maxThreads);
 	// adding chunks to different threads.
 	int i=0;
 	thread_args_t* th_args = malloc(num_of_chunks * sizeof(thread_args_t));
@@ -122,14 +133,14 @@ int main(int argc, char *argv[])
 		th_args[i].arg_crypt_key = key;
 		// add thread
         if(tpool_add_work(tm, _operateAction, th_args + i) == false){
-			printf("Threadpool error: thread couldnt added to work\n");
+			printf("[Error] Threadpool error: thread couldnt added to work\n");
 			break;
 		}
 		
 		_ptrCh = _ptrCh->next;
 		i++;
 	}
-	
+
 	tpool_wait(tm);
 
 	sleep(1);
