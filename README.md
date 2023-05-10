@@ -14,9 +14,9 @@ If your machin doesnt recognize the executable, try `sudo chmod +x test.sh`<br/>
 
 File| bytes| encrypt before threadpool|encrypt after threadpool| decrypt before threadpool|decrypt after threadpool
 ---|---|---|---|---|---
-helloWorld.txt| 0.0| 0.138 seconds| 0.138 seconds| 0.140 seconds. |0.138 seconds.
-az.txt| 0.0| 13.128seconds.| 2.894 seconds.|13.139 seconds.|0.017 seconds.
-bigFile.txt| 0.0| 42.858 seconds| 1.902 seconds.|42.898 seconds.|1.947 seconds.
+helloWorld.txt| 27 bytes| 0.138 seconds| 0.138 seconds| 0.140 seconds. |0.138 seconds.
+az.txt| 2,625 bytes| 13.128seconds.| 2.894 seconds.|13.139 seconds.|0.017 seconds.
+bigFile.txt| 8,571 bytes| 42.858 seconds| 1.902 seconds.|42.898 seconds.|1.947 seconds.
 
 before:
 1. az.txt, time to encrypt = 13.128seconds. Time taken to decrypt: 13.139 seconds.

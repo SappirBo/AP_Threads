@@ -2,6 +2,8 @@
 This Header handles the chuncks of data in the system.
 */
 
+/* Max length of chars in data*/
+// const int DATA_MAX_LENGTH = 1024;
 
 /*Data Chuncks Struct, each Chunk include chunk number, 1024 chars data and the next chunck*/
 typedef struct _dataChunk {
@@ -28,7 +30,8 @@ Given a dataChunk linklist header and a path to a file, this function will take 
 Param:
 	dataChunk *headChunk - head of the data chunks, where the input from stdin will enter.
 	char* path - where to take the data from.
-*/int getData_fromFile(dataChunk *headChunk,char* path);
+*/
+int getData_fromFile(dataChunk *headChunk,char* path);
 
 
 /*Free all the linked list.*/

@@ -135,7 +135,12 @@ int writeDataToFile(dataChunk *_headChunk, int _chunk_amount, char* _filePath){
     int count = 0;
 	while(count<_chunk_amount)
 	{
-		fputs(ptr->data, fp);
+		// fputs(ptr->data, fp);
+		size_t length = strlen(ptr->data);
+		size_t numChars = (length < 1024) ? length : 1024;
+
+		fwrite(ptr->data, sizeof(char), numChars, fp);
+
 		count++;
 		ptr = ptr->next;
 	}

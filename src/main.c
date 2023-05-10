@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
 	{
 		num_of_chunks = getData_fromFile(_headCh,source_file);
 	}
+	// printf("[main] num of chunks: %d\n",num_of_chunks);
 	dataChunk* _ptrCh = _headCh;
 	//Setting up the threadpool
 	tpool_t *tm;
@@ -117,7 +118,7 @@ int main(int argc, char *argv[])
 	
 	tpool_wait(tm);
 
-	sleep(0.1);
+	sleep(1);
 
 	tpool_destroy(tm);
 
@@ -134,6 +135,8 @@ void _operateAction(void* args)
     dataChunk* _ptrCh = _arg->arg_ptrCh;
     bool _flag = _arg->arg_flag;
     int _crypt_key = _arg->arg_crypt_key;
+
+	// printf("[_operateAction] Chunk num: %d.\n",_ptrCh->num);
 	// Updating crypto_fn to be the right function according to the operation flag.
 	crypto_fn fn = NULL;
 	if (_flag) {
