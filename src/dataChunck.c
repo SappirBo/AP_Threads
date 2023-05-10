@@ -126,21 +126,28 @@ int writeDataToFile(dataChunk *_headChunk, int _chunk_amount, char* _filePath){
 	FILE *fp;
     dataChunk* ptr = _headChunk;
 
-    fp = fopen(_filePath, "w");
-    if (fp == NULL)
+	if(!strcmp(_filePath,"send_to_std"))
 	{
-        perror("Error opening file");
-        return 0;
-    }
+		fp = stdout;
+	}
+	else
+	{
+		fp = fopen(_filePath, "w");
+		if (fp == NULL)
+		{
+			perror("Error opening file");
+			return 0;
+		}
+	}
+    
     int count = 0;
 	while(count<_chunk_amount)
 	{
-		// fputs(ptr->data, fp);
 		size_t length = strlen(ptr->data);
 		size_t numChars = (length < 1024) ? length : 1024;
 
 		fwrite(ptr->data, sizeof(char), numChars, fp);
-
+		
 		count++;
 		ptr = ptr->next;
 	}

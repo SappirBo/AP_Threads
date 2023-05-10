@@ -32,6 +32,5 @@ after:
 [Data about Threadpool and code example](https://nachtimwald.com/2019/04/12/thread-pool-in-c/).
 
 ## ToDo
-1. check validation of "<" Operator.
-2. adding test script.
+1. adding test script.
 

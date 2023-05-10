@@ -27,16 +27,23 @@ Params:
 */
 static void _operateAction(void* args);
 
+const int ARGC_FOR_PIPE = 3;
+const int ARGC_FOR_SRC_AND_DEST = 5;
 
 int main(int argc, char *argv[])
 {
+
 	/*Check for valid amount of arguments, expect 5 arguments exactly.*/
-	if (argc < 5)
+	if (argc != ARGC_FOR_SRC_AND_DEST && argc != ARGC_FOR_PIPE)
 	{
-	    printf("Eror: missing arguments!, %d/5 found.\n",argc);
+	    printf("[Error]: missing arguments!, %d/5 found.\n",argc);
+		for(int i=0; i<argc; ++i)
+		{
+			printf("[Error] Arg %i = %s\n",i, argv[i]);
+		}
 	    return 0;
 	}
-	else if (argc > 5)
+	else if (argc > ARGC_FOR_SRC_AND_DEST)
 	{
 	    printf("Eror: to much arguments!, %d/5 found.\n",argc);
 	    return 0;
@@ -53,11 +60,17 @@ int main(int argc, char *argv[])
 	bool operate_flag;
     char source_file[MAX_SIZE];
     char dest_file[MAX_SIZE];
-    strcpy(flag, argv[2]);
-    strcpy(source_file,argv[3]);
-    strcpy(dest_file,argv[4]);
+	strcpy(flag, argv[2]);
+	if(argc==ARGC_FOR_SRC_AND_DEST)
+	{
+		// This argv will have values only if it is not piped.
+		strcpy(source_file,argv[3]);
+		strcpy(dest_file,argv[4]);
+	}else{
+		strcpy(dest_file,"send_to_std");
+	}
 	
-
+	// Find out what oporate to do: encrypt or decrypt.
     if(!strcmp(flag,"-d"))
     {
 		operate_flag = true;  
@@ -68,9 +81,10 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("Flag is UNKNOWN.\n");
+        printf("[Error] Flag is UNKNOWN: flag = %s, Try again...\n",flag);
         return 0;
     }
+	
 	char c;
 	int counter = 0;
 	int dest_size = MAX_SIZE;
@@ -78,7 +92,7 @@ int main(int argc, char *argv[])
 	dataChunk* _headCh = (dataChunk*)malloc(sizeof(dataChunk));
 	int num_of_chunks = 0;
 
-	if(!(strcmp(source_file,">")))
+	if(argc == ARGC_FOR_PIPE)
 	{
 		num_of_chunks = getData_stdIn(_headCh);
 	}
@@ -86,7 +100,7 @@ int main(int argc, char *argv[])
 	{
 		num_of_chunks = getData_fromFile(_headCh,source_file);
 	}
-	// printf("[main] num of chunks: %d\n",num_of_chunks);
+
 	dataChunk* _ptrCh = _headCh;
 	//Setting up the threadpool
 	tpool_t *tm;
