@@ -4,6 +4,7 @@
 clear
 cd ..
 echo "[Test] Start Test Script 1 - Only enctypt - src file to dest file" 
+echo "[Test]                       Will messure the time it takes to encrypt chosen file (encrypt with key = 3)."
 echo ""
 
 
@@ -26,6 +27,9 @@ else
     exit 1
 fi
 echo ""
+
+echo "[Test] Source file chosen: ${input_file}"
+
 
 # measure how long it took to run
 time_taken=$( TIMEFORMAT='%3R'; { time ./coder "$key" "$flag" "$input_file" "$output_file"; } 2>&1 )
