@@ -1,3 +1,9 @@
+/*
+File: main.c
+Author: Sappir Bohbot
+Date: 5/12/2023.
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -22,6 +28,7 @@ typedef struct _thread_args {
 /*Variable declaration*/
 # define MAX_SIZE 1024
 typedef void (*crypto_fn)(char *s,int key);
+# define MAX_THREADS 4
 
 /*Function for oparate encrypt/decrypt, 
 Params:
@@ -49,7 +56,7 @@ int main(int argc, char *argv[])
 	}
 	else if (argc > ARGC_FOR_SRC_AND_DEST)
 	{
-	    printf("Eror: to much arguments!, %d/5 found.\n",argc);
+	    printf("[Error] to much arguments!, %d/5 found.\n",argc);
 	    return 0;
 	} 
 
@@ -104,24 +111,23 @@ int main(int argc, char *argv[])
 	{
 		num_of_chunks = getData_fromFile(_headCh,source_file);
 	}
-	// printf("[main] number of chunks: %d\n",num_of_chunks);
 	dataChunk* _ptrCh = _headCh;
 	//Setting up the threadpool
 	tpool_t *tm;
 	// Check the number of availble threads.
-	int maxThreads = get_nprocs();
-	if (maxThreads == -1) {
-        perror("Failed to get the maximum number of threads");
-        return 1;
-    }
+	// int maxThreads = get_nprocs();
+	// if (maxThreads == -1) {
+    //     perror("Failed to get the maximum number of threads");
+    //     return 1;
+    // }
 	// Creating the threadpool
-	tm = tpool_create(maxThreads);
+	tm = tpool_create(MAX_THREADS);
 	// adding chunks to different threads.
 	int i=0;
 	thread_args_t* th_args = malloc(num_of_chunks * sizeof(thread_args_t));
 	if (th_args == NULL) {
 		// Error handling for memory allocation failure
-		printf("Error: Failed to allocate memory for th_args\n");
+		printf("[Error] Failed to allocate memory for th_args\n");
 		return -1;
 	}
 
@@ -143,7 +149,7 @@ int main(int argc, char *argv[])
 
 	tpool_wait(tm);
 
-	sleep(1);
+	// sleep(num_of_chunks);
 
 	tpool_destroy(tm);
 

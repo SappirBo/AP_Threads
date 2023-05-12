@@ -1,14 +1,17 @@
 /*
+File: dataChunck.c
+Author: Sappir Bohbot
+Date: 5/12/2023.
+
 This Header handles the chuncks of data in the system.
 */
 
-/* Max length of chars in data*/
-// const int DATA_MAX_LENGTH = 1024;
+# define Max_Size_Data 1024
 
 /*Data Chuncks Struct, each Chunk include chunk number, 1024 chars data and the next chunck*/
 typedef struct _dataChunk {
 	int num;
-	char data[1024];
+	char data[Max_Size_Data];
 	struct _dataChunk *next;
 }dataChunk;
 

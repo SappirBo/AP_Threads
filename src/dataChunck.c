@@ -1,3 +1,9 @@
+/*
+File: dataChunck.c
+Author: Sappir Bohbot
+Date: 5/12/2023.
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,14 +17,14 @@ int getData_stdIn(dataChunk *headChunk){
 	char c;
 	int counter = 0;
 	int chunckNum = 1;
-	int dest_size = 1024;
+	int dest_size = Max_Size_Data;
 	char data[dest_size];
 	while ((c = getchar()) != EOF)
 	{
 	  data[counter] = c;
 	  counter++;
 
-	  if (counter == 1024){
+	  if (counter == Max_Size_Data){
 		ptrData->num = chunckNum;
 		strcpy(ptrData->data, data);
 		ptrData->next = (dataChunk *) malloc(sizeof(dataChunk));
@@ -82,7 +88,7 @@ int getData_fromFile(dataChunk *headChunk,char* path)
 	char c;
 	int counter = 0;
 	int chunckNum = 1;
-	int dest_size = 1024;
+	int dest_size = Max_Size_Data;
 	char data[dest_size];
 
 	FILE *fp;
@@ -100,7 +106,7 @@ int getData_fromFile(dataChunk *headChunk,char* path)
 	  data[counter] = c;
 	  counter++;
 
-	  if (counter == 1024){
+	  if (counter == Max_Size_Data){
 		ptrData->num = chunckNum;
 		strcpy(ptrData->data, data);
 		ptrData->next = (dataChunk *) malloc(sizeof(dataChunk));
@@ -146,7 +152,7 @@ int writeDataToFile(dataChunk *_headChunk, int _chunk_amount, char* _filePath){
 	{
 		// printf("[writeDataToFile] count: %d, ptr num: %d\n",count, ptr->num);
 		size_t length = strlen(ptr->data);
-		size_t numChars = (length < 1024) ? length : 1024;
+		size_t numChars = (length < Max_Size_Data) ? length : Max_Size_Data;
 
 		fwrite(ptr->data, sizeof(char), numChars, fp);
 		

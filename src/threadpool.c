@@ -1,10 +1,12 @@
 /*
+File: threadPool.c
+Author: Sappir Bohbot
 Date: 4/30/2023.
 Code Based on: https://nachtimwald.com/2019/04/12/thread-pool-in-c/
 */
 
 #include "../include/threadpool.h"
-
+#include "stdio.h"
 
 
 /*
@@ -17,10 +19,6 @@ struct tpool_work {
 };
 typedef struct tpool_work tpool_work_t;
 
-/*
-Since the work queue is implemented as a linked list work_first and work_last are used to push and pop work objects.
-There is a single mutex (work_mutex) which is used for all locking.
-*/
 struct tpool {
     tpool_work_t    *work_first;
     tpool_work_t    *work_last;
@@ -82,7 +80,6 @@ static tpool_work_t *tpool_work_get(tpool_t *tm)
 
 /*
 This is the heart and soul of the pool and is where work is handled. At a high level this waits for work and processes it.
-
 */
 static void *tpool_worker(void *arg)
 {
@@ -95,8 +92,9 @@ static void *tpool_worker(void *arg)
         while (tm->work_first == NULL && !tm->stop)
             pthread_cond_wait(&(tm->work_cond), &(tm->work_mutex));
 
-        if (tm->stop)
+        if (tm->stop){
             break;
+        }
 
         work = tpool_work_get(tm);
         tm->working_cnt++;
@@ -121,7 +119,6 @@ static void *tpool_worker(void *arg)
 }
 
 
-/*When creating the pool the default is two threads if zero was specified. Otherwise, the caller specified number will be used.*/
 tpool_t *tpool_create(size_t num)
 {
     tpool_t   *tm;
@@ -152,6 +149,12 @@ tpool_t *tpool_create(size_t num)
 
 void tpool_destroy(tpool_t *tm)
 {
+    //  Empty While loop for all the threads asigned to end, Only then We can Close our Threadpool.
+    while (tm->work_first != NULL)
+    {
+      // Do Nothing  
+    }
+    
     tpool_work_t *work;
     tpool_work_t *work2;
 
