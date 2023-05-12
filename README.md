@@ -44,8 +44,8 @@ bigFile.txt| 100,999 bytes | 504.968 seconds| 130.608 seconds.|506.004 seconds.|
 data/tmp.txt and data/result.txt are both for testing.
 
 ## Sources
-[Data about Threadpool and code example](https://nachtimwald.com/2019/04/12/thread-pool-in-c/).
-[youtube: Thread Pools in C](https://www.youtube.com/watch?v=_n2hE2gyPxU&t=459s&ab_channel=CodeVault).
-[wikipedia: Thread pool](https://en.wikipedia.org/wiki/Thread_pool).
-[openAi: chatGPT](https://chat.openai.com/).
+1. [Data about Threadpool and code example](https://nachtimwald.com/2019/04/12/thread-pool-in-c/).
+2. [youtube: Thread Pools in C](https://www.youtube.com/watch?v=_n2hE2gyPxU&t=459s&ab_channel=CodeVault).
+3. [wikipedia: Thread pool](https://en.wikipedia.org/wiki/Thread_pool).
+4. [openAi: chatGPT](https://chat.openai.com/).
 
