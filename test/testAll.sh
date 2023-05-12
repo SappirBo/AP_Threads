@@ -32,7 +32,7 @@ elif [ "$1" -eq 2 ]; then
 elif [ "$1" -eq 3 ]; then
     input_file="data/bigFile.txt"
 else
-    echo -e "${BLUE}[Test]${NC} Invalid argument. Please enter 1, 2, or 3."
+    echo -e "${BLUE}[Test]${NC} ${RED}Invalid argument!${NC} Please enter 1, 2, or 3."
     exit 1
 fi
 
