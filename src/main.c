@@ -115,13 +115,13 @@ int main(int argc, char *argv[])
 	//Setting up the threadpool
 	tpool_t *tm;
 	// Check the number of availble threads.
-	// int maxThreads = get_nprocs();
-	// if (maxThreads == -1) {
-    //     perror("Failed to get the maximum number of threads");
-    //     return 1;
-    // }
+	int maxThreads = get_nprocs();
+	if (maxThreads == -1) {
+        perror("Failed to get the maximum number of threads");
+        return 1;
+    }
 	// Creating the threadpool
-	tm = tpool_create(MAX_THREADS);
+	tm = tpool_create(maxThreads);
 	// adding chunks to different threads.
 	int i=0;
 	thread_args_t* th_args = malloc(num_of_chunks * sizeof(thread_args_t));
