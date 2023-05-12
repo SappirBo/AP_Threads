@@ -4,6 +4,9 @@ URL:  https://github.com/SappirBo/AP_Threads
 
 ## Details
 The task is to implement a threadpool mechanism and synchronization to parallelize an encryption algorithm in a shared library with two functions: "encode" and "decode". The encryption algorithm is slow and can only handle up to 1024 bytes of data. The CMD TOOL that will use the algorithm above will get its working data from stdIn and put the output to stdOut. The flags "-e" and "-d" will be used for encryption and decryption accordingly. The goal is to utilize multi-threading to improve the algorithm's performance by running it faster on a multi-core system.
+<br/>
+<br/>
+[Full details of the assignment](https://github.com/SappirBo/AP_Threads/blob/main/HW2.pdf).
 
 ## How to run.
 First of all, use `make` for the main directory (AP_Threads) to create all the executables.<br/>
@@ -48,4 +51,5 @@ data/tmp.txt and data/result.txt are both for testing.
 2. [youtube: Thread Pools in C](https://www.youtube.com/watch?v=_n2hE2gyPxU&t=459s&ab_channel=CodeVault).
 3. [wikipedia: Thread pool](https://en.wikipedia.org/wiki/Thread_pool).
 4. [openAi: chatGPT](https://chat.openai.com/).
+5. [Full details of the assignment](https://github.com/SappirBo/AP_Threads/blob/main/HW2.pdf).
 
